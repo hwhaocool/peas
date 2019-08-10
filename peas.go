@@ -49,9 +49,18 @@ func main() {
 	switch {
 	case workType == "server":
 		serverIns := server.NewTCPNetwork()
-		serverIns.Listen(port)
 
-		serverIns.RunApi()
+		err := serverIns.Listen(port)
+		if nil != err {
+			log.Println(err)
+			return
+		}
+
+		err := serverIns.RunApi()
+		if nil != err {
+			log.Println(err)
+			return
+		}
 
 	case workType == "agent":
 		serverHost, err := getEnv("serverHost")
@@ -60,28 +69,17 @@ func main() {
 		}
 
 		agent.Run(serverHost, port)
+
+		
 		fmt.Println("Quitting.")
-		conn.Write([]byte("I'm shutting down now.\n"))
-		fmt.Println("< " + "%quit%")
-		conn.Write([]byte("%quit%\n"))
-		os.Exit(0)
+		// conn.Write([]byte("I'm shutting down now.\n"))
+		// fmt.Println("< " + "%quit%")
+		// conn.Write([]byte("%quit%\n"))
+		// os.Exit(0)
 
 	default:
-		conn.Write([]byte("Unrecognized command.\n"))
-	}
-
-	// create server
-	server, err := echoServer()
-	if nil != err {
-		log.Println(err)
-		return
-	}
-
-	// create client
-	client, clientConn, err := echoClient()
-	if nil != err {
-		log.Println(err)
-		return
+		// conn.Write([]byte("Unrecognized command.\n"))
+		fmt.Println("222.")
 	}
 
 	stopCh := make(chan struct{})
