@@ -33,9 +33,9 @@ func NewTCPNetwork() *TCPNetwork {
 	return s
 }
 
-func (t *TCPNetwork) RunApi() error {
+// func (t *TCPNetwork) RunApi() error {
 
-}
+// }
 
 // Listen an address to accept client connection
 func (t *TCPNetwork) Listen(port string) error {
